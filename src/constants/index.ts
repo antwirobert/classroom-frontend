@@ -69,29 +69,29 @@ export const REFRESH_TOKEN_URL = `${BASE_URL}/refresh-token`;
 export const CLOUDINARY_UPLOAD_PRESET = import.meta.env
   .VITE_CLOUDINARY_UPLOAD_PRESET;
 
-export const MOCK_SUBJECTS: Subject[] = [
-  {
-    id: 1,
-    code: "CS101",
-    name: "Introduction to Computer Science",
-    department: "CS",
-    description: "An introductory course",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 2,
-    code: "MATH201",
-    name: "Calculus II",
-    department: "Math",
-    description: "Advanced stuudy of integration and differention",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 3,
-    code: "ENG102",
-    name: "Literature and Composition",
-    department: "English",
-    description: "A course focused on critical thinking skills",
-    createdAt: new Date().toISOString(),
-  },
-];
+// export const MOCK_SUBJECTS: Subject[] = [
+//   {
+//     id: 1,
+//     code: "CS101",
+//     name: "Introduction to Computer Science",
+//     department: "CS",
+//     description: "An introductory course",
+//     createdAt: new Date().toISOString(),
+//   },
+//   {
+//     id: 2,
+//     code: "MATH201",
+//     name: "Calculus II",
+//     department: "Math",
+//     description: "Advanced stuudy of integration and differention",
+//     createdAt: new Date().toISOString(),
+//   },
+//   {
+//     id: 3,
+//     code: "ENG102",
+//     name: "Literature and Composition",
+//     department: "English",
+//     description: "A course focused on critical thinking skills",
+//     createdAt: new Date().toISOString(),
+//   },
+// ];
