@@ -24,11 +24,12 @@ import { CreateView } from "@/components/refine-ui/views/create-view";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb";
 
 import { Textarea } from "@/components/ui/textarea";
-import { useBack } from "@refinedev/core";
+import { useBack, useList } from "@refinedev/core";
 import { Loader2 } from "lucide-react";
 import { classSchema } from "@/lib/schema";
 import z from "zod";
 import UploadWidget from "@/components/upload-widget";
+import { Subject, User } from "@/types";
 
 const ClassesCreate = () => {
   const back = useBack();
@@ -45,6 +46,7 @@ const ClassesCreate = () => {
   });
 
   const {
+    refineCore: { onFinish },
     handleSubmit,
     formState: { isSubmitting, errors },
     control,
@@ -52,37 +54,34 @@ const ClassesCreate = () => {
 
   const onSubmit = async (values: z.infer<typeof classSchema>) => {
     try {
-      console.log(values);
+      await onFinish(values);
     } catch (error) {
       console.error("Error creating class:", error);
     }
   };
 
-  const teachers = [
-    {
-      id: 1,
-      name: "John Doe",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-    },
-    {
-      id: 3,
-      name: "Dr. Alan Turing",
-    },
-  ];
+  const { query: subjectsQuery } = useList<Subject>({
+    resource: "subjects",
+    pagination: { pageSize: 100 },
+  });
 
-  const subjects = [
-    {
-      id: 1,
-      name: "Mathematics",
-      code: "MATH",
-    },
-    { id: 2, name: "Computer Science", code: "CS" },
-    { id: 3, name: "Physics", code: "PHY" },
-    { id: 4, name: "Chemistry", code: "CHEM" },
-  ];
+  const { query: teachersQuery } = useList<User>({
+    resource: "users",
+    filters: [
+      {
+        field: "role",
+        operator: "eq",
+        value: "teacher",
+      },
+    ],
+    pagination: { pageSize: 100 },
+  });
+
+  const subjects = subjectsQuery?.data?.data || [];
+  const subjectsLoading = subjectsQuery.isLoading;
+
+  const teachers = teachersQuery?.data?.data || [];
+  const teachersLoading = teachersQuery.isLoading;
 
   const bannerPublicId = form.watch("bannerCldPubId");
 
@@ -191,6 +190,7 @@ const ClassesCreate = () => {
                             field.onChange(Number(value))
                           }
                           value={field.value?.toString()}
+                          disabled={subjectsLoading}
                         >
                           <FormControl>
                             <SelectTrigger className="w-full">
@@ -224,6 +224,7 @@ const ClassesCreate = () => {
                         <Select
                           onValueChange={field.onChange}
                           value={field.value?.toString()}
+                          disabled={teachersLoading}
                         >
                           <FormControl>
                             <SelectTrigger className="w-full">
